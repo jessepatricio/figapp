@@ -8,6 +8,6 @@ namespace figAPI.Data
     {
          Task<Contact> GetContact(int id);
 
-         Task<Contact> GetContacts(QueryParams queryParams);
+         Task<PagedList<Contact>> GetContacts(QueryParams queryParams);
     }
 }

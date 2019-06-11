@@ -36,6 +36,7 @@ namespace figAPI.Controllers
             var contacts = await _repo.GetContacts(queryParams);
             var contactsToReturn = _mapper.Map<IEnumerable<ContactForListDto>>(contacts);
 
+    
             Response.AddPagination(contacts.CurrentPage, contacts.PageSize,
                 contacts.TotalCount, contacts.TotalPages);
 
