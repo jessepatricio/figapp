@@ -47,6 +47,9 @@ namespace figAPI
             //add seeder to services to enable populate db with data
             services.AddTransient<Seeder>();
 
+            //add scope
+            services.AddScoped<IContactRepository, ContactRepository>();
+
             //add automapper service
             services.AddAutoMapper();
         }

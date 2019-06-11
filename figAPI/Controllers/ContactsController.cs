@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -34,24 +35,16 @@ namespace figAPI.Controllers
         {
             
             var contacts = await _repo.GetContacts(queryParams);
+            
             var contactsToReturn = _mapper.Map<IEnumerable<ContactForListDto>>(contacts);
 
     
             Response.AddPagination(contacts.CurrentPage, contacts.PageSize,
-                contacts.TotalCount, contacts.TotalPages);
+         contacts.TotalCount, contacts.TotalPages);
 
             return Ok(contactsToReturn);
         }
-
-        // // search records with keyword
-        // [HttpGet("{query}")]
-        // public async Task<IActionResult> GetContacts(string query) {
-
-        //     var contacts = await _context.Contacts.Where(m => m.first_name.Contains(query.ToLower())).ToListAsync();
-        //     return Ok(contacts);
-
-        // }
-
+       
         // GET api/contacts/5
         [HttpGet("{id}", Name="GetContact")]
         public async Task<IActionResult> GetContacts(int id)
