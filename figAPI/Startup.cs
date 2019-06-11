@@ -33,6 +33,11 @@ namespace figAPI
             //add connection to sqlite from config
             services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection"))
                     .ConfigureWarnings(warnings => warnings.Ignore(CoreEventId.IncludeIgnoredWarning)));
+            //add CORS services
+            services.AddCors();
+
+        
+            
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(opt => {
                     opt.SerializerSettings.ReferenceLoopHandling =
@@ -61,6 +66,8 @@ namespace figAPI
 
             // seed call
             seeder.SeedContacts();
+            //
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             //app.UseHttpsRedirection();
             app.UseMvc();
         }

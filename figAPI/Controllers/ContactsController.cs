@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using figAPI.Data;
+using figAPI.Dtos;
+using figAPI.Helpers;
 using figAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+
 
 namespace figAPI.Controllers
 {
@@ -15,48 +18,48 @@ namespace figAPI.Controllers
 
     public class ContactsController : ControllerBase
     {
-        private readonly DataContext _context;
+        private readonly IContactRepository _repo;
         private readonly IMapper _mapper;
         
         // initialize and inject data context
-        public ContactsController(DataContext context, IMapper mapper)
+        public ContactsController(IContactRepository repo, IMapper mapper)
         {
             //initial database context
             _mapper = mapper;
-            _context = context;
+            _repo = repo;
         }
         // GET api/contacts
         [HttpGet]
-        public async Task<IActionResult> GetContacts()
+        public async Task<IActionResult> GetContacts([FromQuery]QueryParams queryParams)
         {
-            var contacts = await _context.Contacts.ToListAsync();
-            return Ok(contacts);
+            
+            var contacts = await _repo.GetContacts(queryParams);
+            var contactsToReturn = _mapper.Map<IEnumerable<ContactForListDto>>(contacts);
+
+            Response.AddPagination(contacts.CurrentPage, contacts.PageSize,
+                contacts.TotalCount, contacts.TotalPages);
+
+            return Ok(contactsToReturn);
         }
 
+        // // search records with keyword
+        // [HttpGet("{query}")]
+        // public async Task<IActionResult> GetContacts(string query) {
+
+        //     var contacts = await _context.Contacts.Where(m => m.first_name.Contains(query.ToLower())).ToListAsync();
+        //     return Ok(contacts);
+
+        // }
+
         // GET api/contacts/5
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetContact(int id)
+        [HttpGet("{id}", Name="GetContact")]
+        public async Task<IActionResult> GetContacts(int id)
         {
-            var contact = await _context.Contacts.FirstOrDefaultAsync(x => x.Id == id);
+            var contact = await _repo.GetContact(id);
+            var contactToReturn = _mapper.Map<ContactForDetailedDto>(contact);
             return Ok(contact);
         }
 
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        
     }
 }
