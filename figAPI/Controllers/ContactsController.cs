@@ -40,7 +40,7 @@ namespace figAPI.Controllers
 
     
             Response.AddPagination(contacts.CurrentPage, contacts.PageSize,
-         contacts.TotalCount, contacts.TotalPages);
+            contacts.TotalCount, contacts.TotalPages);
 
             return Ok(contactsToReturn);
         }

@@ -35,7 +35,7 @@ namespace figAPI.Data
             //         || u.email == queryParams.email
             //         || u.phone1 == queryParams.phone1);
 
-            Console.Write(queryParams.last_name);
+            //Console.Write(queryParams.last_name);
             return  await PagedList<Contact>.CreateAsync(contacts, queryParams.PageNumber, queryParams.PageSize);
         }
 
