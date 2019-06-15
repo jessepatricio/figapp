@@ -1,29 +1,57 @@
 import React from 'react'
+import axios from 'axios';
+
 import Header from './Header';
 import SearchBar from './SearchBar';
-import figapi from '../components/api/fig-contacts-api';
+
 import ContactList from './ContactList';
 
-export class App extends React.Component {
-    //initialize state contacts
+class App extends React.Component {
     state = { contacts: [] };
-    //submit function will call api and return data
-    onSearchSubmit = async (srcText) => {
-        const response = await figapi.get('/contacts', { 
-            params: { query: srcText }
-         });
+
+    componentDidMount() {
+
+        axios.get('http://localhost:5000/api/contacts', { 
+            params: { query: '' }
+        }).then(res => {
+            //console.log(res);
+            //console.log(res.data);
+            this.setState({ contacts: res.data });
+        });
         
-        this.setState({ contacts: response.data.results });
-        console.log(`app: ` + this.state.contacts);
+
+    }
+    
+    //submit function will call api and return data
+    onSearchSubmit = async (srcText) =>  {
+        
+        axios.get('http://localhost:5000/api/contacts', { 
+            params: { query: srcText }
+        }).then(res => {
+            //console.log(res);
+            //console.log(res.data);
+            this.setState({ contacts: res.data });
+        });
+        
+       
     };
 
     render() {
         return (
             <div className="ui container"> 
                 <Header title="Acme Contact Management"/>
-                <SearchBar onSubmit={this.onSearchSubmit} />
-                <ContactList contacts={this.state.contacts} />
-                
+                <SearchBar onSubmit={ this.onSearchSubmit } />
+                Found: {this.state.contacts.length}
+                <table className="ui celled table">
+                    <thead>
+                    <tr>
+                        <th>First</th><th>Last</th><th>Email</th><th>Phone</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <ContactList contacts={this.state.contacts} />
+                    </tbody>
+                </table>
             </div>
         )
     }
