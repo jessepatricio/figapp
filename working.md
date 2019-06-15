@@ -4,7 +4,11 @@
 [figapp] is a solution that demostrate an application that retrieve data from api and able to display data in list with capabilities for searching and filtering.
 
 
-note: sample data csv is converted to json file using csvjson.com for data seeding in web api.
+additional tools: 
+  -csvjson converter: sample data csv is converted to json file using csvjson.com for data seeding in web api.
+  -axios: to consume web api
+  -semantic ui: for styling
+  -entity framework core: code-first approach
 
 preparation: 1 hrs
 coding: 8 hrs
