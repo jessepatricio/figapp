@@ -26,11 +26,17 @@ class App extends React.Component {
     onSearchSubmit = async (srcText) =>  {
         
         axios.get('http://localhost:5000/api/contacts', { 
-            params: { query: srcText }
+            params: { query: srcText.toLowerCase() }
         }).then(res => {
             //console.log(res);
             //console.log(res.data);
-            this.setState({ contacts: res.data });
+            var results = res.data.filter(item => item.first_name.toLowerCase().indexOf(srcText) !== -1
+                || item.last_name.toLowerCase().indexOf(srcText) !== -1 
+                || item.email.toLowerCase().indexOf(srcText) !== -1 
+                || item.phone1.toLowerCase().indexOf(srcText) !== -1);
+
+
+            this.setState({ contacts: results });
         });
         
        
