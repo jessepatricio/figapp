@@ -6,6 +6,7 @@ export class SearchBar extends Component {
     onFormSubmit = (event) => {
         event.preventDefault();
 
+        console.log(event.log)
         this.props.onSubmit(this.state.srcText);
     }
 
@@ -18,7 +19,8 @@ export class SearchBar extends Component {
                     <input id="searchbox" 
                         type="text"
                         value={this.state.srcText} 
-                        onChange={e => this.setState({ srcText: e.target.value })}/>
+                        onChange={e => this.setState({ srcText: e.target.value })}
+                         />
                     </div>
                 </form>
             </div>

@@ -11,10 +11,6 @@ namespace figAPI.Helpers
             get { return pageSize; }
             set { pageSize = (value > MaxPageSize) ? MaxPageSize : value; } 
         }
-        public string first_name  { get; set; }
-        public string last_name { get; set; }
-        public string email { get; set; }
-        public string phone1 { get; set; }
-        
+       
     }
 }
