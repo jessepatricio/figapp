@@ -11,10 +11,10 @@ additional tools/libraries:
   * [entity framework core] code-first approach
   * [rc-pagination] component for pagination display
 
-preparation: 1 hrs
+preparation: 2 hrs
 coding: 8 hrs
 styling: 30 minutes
-building and testing: 30 min
+building and testing: 1 hr
 
 Deployment:
   1. Create wwwroot folder to figAPI working folder
