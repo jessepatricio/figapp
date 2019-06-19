@@ -5,6 +5,8 @@ import SearchBar from './SearchBar';
 
 import ContactList from './ContactList';
 import contactAPI from './api/fig-contacts-api';
+import Pagination from 'rc-pagination';
+import 'rc-pagination/assets/index.css';
 
 class App extends React.Component {
     state = { 
@@ -17,11 +19,15 @@ class App extends React.Component {
 
     componentDidMount() {
 
-        contactAPI.get('/contacts', { params: { query: ''}})
+        contactAPI.get('/contacts', { 
+            params: { 
+                    pageNumber: this.state.pageNumber 
+                        }
+                    })
             .then(res => {
             //get header pagination
             var pagination = JSON.parse(res.headers.pagination);
-            console.log(pagination);
+            //console.log(pagination);
             //destructure json
             const { currentPage, itemsPerPage, totalItems, totalPages } = pagination;
             //console.log(res.data);
@@ -29,14 +35,13 @@ class App extends React.Component {
             //update state variables
             this.setState({ 
                 contacts: res.data,
-                currentPage: currentPage,
+                currentPage: (currentPage > 0) ? currentPage : 1,
                 itemsPerPage: itemsPerPage,
                 totalItems: totalItems,
                 totalPages: totalPages 
             });
         });
         
-
     }
     
     //submit function will call api and return data
@@ -57,6 +62,38 @@ class App extends React.Component {
        
     };
 
+    onChange = (page) => {
+        console.log(page);
+       
+        this.setState( {
+            currentPage: page
+        });
+
+        contactAPI.get('/contacts', { 
+            params: { 
+                    pageNumber: page
+                        }
+                    })
+            .then(res => {
+            //get header pagination
+            var pagination = JSON.parse(res.headers.pagination);
+            console.log(pagination);
+            //destructure json
+            const { currentPage, itemsPerPage, totalItems, totalPages } = pagination;
+            //console.log(res.data);
+            console.log(`curPage: ` + currentPage + ` perPage ` + itemsPerPage + ` totItems ` + totalItems + ` totalPages ` + totalPages);
+            //update state variables
+            this.setState({ 
+                contacts: res.data,
+                currentPage: currentPage,
+                itemsPerPage: itemsPerPage,
+                totalItems: totalItems,
+                totalPages: totalPages 
+            });
+        });
+       
+    }
+
     
     render() {
         return (
@@ -72,10 +109,16 @@ class App extends React.Component {
                     <tbody>
                         <ContactList contacts={this.state.contacts} />
                         <tr>
-                        <td colSpan="4">Total pages: {this.state.totalPages}</td>
+                        <td colSpan="4">Total Records: {this.state.totalItems}</td>
                     </tr>
                     </tbody>         
                 </table>
+                <Pagination 
+                    onChange={this.onChange} 
+                    current={this.state.currentPage} 
+                    total={this.state.totalItems}
+                    defaultCurrent={1}
+                    />
             </div>
         )
     }
