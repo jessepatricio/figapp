@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
 using figAPI.Data;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -70,8 +64,13 @@ namespace figAPI
             // seed call
             seeder.SeedContacts();
             //
-            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            app.UseCors(x => x.WithOrigins("http://localhost:8000")
+                .AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             //app.UseHttpsRedirection();
+            //use default files index.html, index.js, etc
+            app.UseDefaultFiles();
+            //allow kestrel to host app in wwwroot folder
+            app.UseStaticFiles();
             app.UseMvc();
         }
     }

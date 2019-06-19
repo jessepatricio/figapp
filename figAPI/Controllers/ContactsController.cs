@@ -29,12 +29,11 @@ namespace figAPI.Controllers
         public async Task<IActionResult> GetContacts([FromQuery]QueryParams queryParams)
         {
             
-
+            //get contacts table
             var contacts = await _repo.GetContacts(queryParams);
-            
+            //map to contact list display format
             var contactsToReturn = _mapper.Map<IEnumerable<ContactForListDto>>(contacts);
-
-    
+            //add pagination to header    
             Response.AddPagination(contacts.CurrentPage, contacts.PageSize,
             contacts.TotalCount, contacts.TotalPages);
 

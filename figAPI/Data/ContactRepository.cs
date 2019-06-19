@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using figAPI.Helpers;
 using figAPI.Models;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace figAPI.Data
 {
@@ -17,9 +17,12 @@ namespace figAPI.Data
         {
             _context = context;
         }
-        public Task<Contact> GetContact(int id)
+        public async Task<Contact> GetContact(int id)
         {
-            throw new System.NotImplementedException();
+            //get contacts data by id
+            var contact =   await _context.Contacts.FirstOrDefaultAsync(p => p.Id == id);
+
+            return contact;
         }
 
         public async Task<PagedList<Contact>> GetContacts([FromQuery] QueryParams queryParams)
