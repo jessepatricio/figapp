@@ -16,6 +16,13 @@ coding: 8 hrs
 styling: 30 minutes
 building and testing: 30 min
 
+Deployment:
+  1. Create wwwroot folder to figAPI working folder
+  2. Build react app "npm run-script build" in figapp projectfolder.
+  2. Copy published folder to wwwroot directory of figAPI project folder
+  4. Run "dotnet watch run" in figAPi folder
+  5. browse "http://localhost:5000" to the launch the app.
+
 Remarks:
   the solution can be enhance by adding the following features:
    - Security (Authentication/ Role permission)
