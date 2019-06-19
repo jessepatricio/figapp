@@ -14,14 +14,16 @@ class App extends React.Component {
         currentPage: 0,
         itemsPerPage: 0,
         totalItems: 0,
-        totalPages: 0 
+        totalPages: 0,
+        keyword: '' 
     };
 
     componentDidMount() {
 
         contactAPI.get('/contacts', { 
             params: { 
-                    pageNumber: this.state.pageNumber 
+                    pageNumber: this.state.pageNumber,
+                    keyword: this.state.keyword 
                         }
                     })
             .then(res => {
@@ -31,7 +33,7 @@ class App extends React.Component {
             //destructure json
             const { currentPage, itemsPerPage, totalItems, totalPages } = pagination;
             //console.log(res.data);
-            console.log(`curPage: ` + currentPage + ` perPage ` + itemsPerPage + ` totItems ` + totalItems + ` totalPages ` + totalPages);
+            //console.log(`keyword: ` + this.state.srcText + ` curPage: ` + currentPage + ` perPage ` + itemsPerPage + ` totItems ` + totalItems + ` totalPages ` + totalPages);
             //update state variables
             this.setState({ 
                 contacts: res.data,
@@ -46,42 +48,54 @@ class App extends React.Component {
     
     //submit function will call api and return data
     onSearchSubmit = async (srcText) =>  {
+
+        this.setState({ keyword: srcText }); 
         
         contactAPI.get('/contacts', { 
-            params: { query:  srcText.toLowerCase() }
+            params: { 
+                searchText: srcText.toLowerCase()
+            }
         }).then(res => {
-            // add filter keyword
-            var results = res.data.filter(item => item.first_name.toLowerCase().indexOf(srcText) !== -1
-                || item.last_name.toLowerCase().indexOf(srcText) !== -1 
-                || item.email.toLowerCase().indexOf(srcText) !== -1 
-                || item.phone1.toLowerCase().indexOf(srcText) !== -1);
-            // set state
-            this.setState({ contacts: results });
+
+             //get header pagination
+             var pagination = JSON.parse(res.headers.pagination);
+             //console.log(pagination);
+             //destructure json
+             const { currentPage, itemsPerPage, totalItems, totalPages } = pagination;
+           
+            this.setState({ 
+                contacts: res.data,
+                currentPage: (currentPage > 0) ? currentPage : 1,
+                itemsPerPage: itemsPerPage,
+                totalItems: totalItems,
+                totalPages: totalPages     
+            });
         });
         
        
     };
 
     onChange = (page) => {
-        console.log(page);
-       
+        //set clicked page
         this.setState( {
             currentPage: page
         });
-
+        //api call
         contactAPI.get('/contacts', { 
-            params: { 
-                    pageNumber: page
-                        }
-                    })
-            .then(res => {
+                params: { 
+                        pageNumber: page,
+                        searchText: this.state.keyword
+                }
+            }).then(res => {
             //get header pagination
             var pagination = JSON.parse(res.headers.pagination);
-            console.log(pagination);
             //destructure json
             const { currentPage, itemsPerPage, totalItems, totalPages } = pagination;
+           
+            //debug value test
             //console.log(res.data);
-            console.log(`curPage: ` + currentPage + ` perPage ` + itemsPerPage + ` totItems ` + totalItems + ` totalPages ` + totalPages);
+            //console.log(`curPage: ` + currentPage + ` perPage ` + itemsPerPage + ` totItems ` + totalItems + ` totalPages ` + totalPages);
+           
             //update state variables
             this.setState({ 
                 contacts: res.data,

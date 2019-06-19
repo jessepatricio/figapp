@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using figAPI.Data;
 using figAPI.Dtos;
 using figAPI.Helpers;
-using figAPI.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -34,6 +29,7 @@ namespace figAPI.Controllers
         public async Task<IActionResult> GetContacts([FromQuery]QueryParams queryParams)
         {
             
+
             var contacts = await _repo.GetContacts(queryParams);
             
             var contactsToReturn = _mapper.Map<IEnumerable<ContactForListDto>>(contacts);

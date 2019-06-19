@@ -11,6 +11,8 @@ namespace figAPI.Helpers
             get { return pageSize; }
             set { pageSize = (value > MaxPageSize) ? MaxPageSize : value; } 
         }
+
+        public string searchText { get; set; }
        
     }
 }
