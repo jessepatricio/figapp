@@ -1,7 +1,7 @@
 
 # figapp
 
-[figapp] is a solution that demostrate an application that retrieve data from api and able to display data in list with capabilities for searching and filtering.
+[figapp] is simples application that consumes data from web api and able to display data in list with capabilities for searching and filtering.
 
 
 additional tools/libraries: 
