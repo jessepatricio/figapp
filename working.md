@@ -21,7 +21,7 @@ Deployment:
   2. Build react app "npm run-script build" in figapp projectfolder.
   2. Copy published folder to wwwroot directory of figAPI project folder
   4. Run "dotnet watch run" in figAPi folder
-  5. browse "http://localhost:5000" to the launch the app.
+  5. browse "http://localhost:5000" or "https://localhost:5001/" to the launch the web api that also hosting the client app.
 
 Remarks:
   the solution can be enhance by adding the following features:
