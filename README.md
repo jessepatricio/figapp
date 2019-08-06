@@ -32,6 +32,8 @@ Remarks:
    - Deploy to a Cloud or onPremise infrastructure.
    - Enhance search capabilities by adding more fields in filtering methods.
 
-
+<p align="center">
+  <img alt="react-weather" src="https://github.com/jessepatricio/content/blob/master/figapp.png">
+</p>
 
 
