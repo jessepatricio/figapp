@@ -33,7 +33,7 @@ Remarks:
    - Enhance search capabilities by adding more fields in filtering methods.
 
 <p align="center">
-  <img alt="react-weather" src="https://github.com/jessepatricio/content/blob/master/figapp.png">
+  <img alt="figapp" src="https://github.com/jessepatricio/content/blob/master/figapp.png">
 </p>
 
 
