@@ -1,8 +1,7 @@
-
 # figapp
+Simple solution for consuming web api and displaying contacts with search, pagination, and filtering capabilities.
 
-[figapp] is simples application that consumes data from web api and able to display data in list with capabilities for searching and filtering.
-
+The application was developed and build using Microsoft dotnet core 2.2 web api and latest React library version 16.8.6 as of this writing.
 
 additional tools/libraries: 
   * [csvjson converter] sample data csv is converted to json file using csvjson.com for data seeding in web api.
@@ -12,7 +11,7 @@ additional tools/libraries:
   * [rc-pagination] component for pagination display
 
 preparation: 2 hrs
-coding: 8 hrs
+coding: 6 hrs
 styling: 30 minutes
 building and testing: 1 hr
 
@@ -32,4 +31,9 @@ Remarks:
    - Use robust and scalable production server such as Postgrest, MSSQL Server, etc.
    - Deploy to a Cloud or onPremise infrastructure.
    - Enhance search capabilities by adding more fields in filtering methods.
+
+<p align="center">
+  <img alt="figapp" src="https://github.com/jessepatricio/content/blob/master/figapp.png">
+</p>
+
 
