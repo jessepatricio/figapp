@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using figAPI.Models;
@@ -18,7 +19,8 @@ namespace figAPI.Data
         public void SeedContacts() {
 
             var checkdata = _context.Contacts.ToList();
-            if (checkdata.Count < 0) {
+                        
+            if (checkdata.Count == 0) {
                 //read file
                 var contactData = System.IO.File.ReadAllText("Data/Contacts.json");
                 //deserialize data
