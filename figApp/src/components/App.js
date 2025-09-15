@@ -4,7 +4,6 @@ import Header from './Header';
 import SearchBar from './SearchBar';
 
 import ContactList from './ContactList';
-import { contactAPI } from './api/fig-contacts-api';
 import Pagination from 'rc-pagination';
 import 'rc-pagination/assets/index.css';
 
@@ -17,26 +16,63 @@ function App() {
     const [keyword, setKeyword] = useState('');
 
     const fetchContacts = useCallback((pageNumber = 1, searchText = '') => {
-        contactAPI.get('/contacts', { 
-            params: { 
-                pageNumber: pageNumber,
-                searchText: searchText.toLowerCase()
-            }
-        }).then(res => {
-            //get header pagination
-            const pagination = JSON.parse(res.headers.pagination);
-            //destructure json
-            const { currentPage, itemsPerPage, totalItems, totalPages } = pagination;
-            
-            //update state variables
-            setContacts(res.data);
-            setCurrentPage(currentPage > 0 ? currentPage : 1);
-            setItemsPerPage(itemsPerPage);
-            setTotalItems(totalItems);
-            setTotalPages(totalPages);
-        }).catch(error => {
-            console.error('Error fetching contacts:', error);
+        // build query string for fetch
+        const params = new URLSearchParams({
+            pageNumber: pageNumber.toString(),
+            searchText: searchText.toLowerCase(),
         });
+
+
+       fetch(`https://localhost:5001/api/contacts?${params.toString()}`, { 
+            method: 'GET',    
+            headers: { 
+                'Accept': 'application/json',
+                },
+            }).then(res => {
+                // First, check for an HTTP error.
+                if (!res.ok) {
+                    throw new Error(`HTTP error: ${res.status}`);
+                }
+
+                 // Get the header inside this block, where 'res' is defined.
+                const paginationHeader = res.headers.get('X-Pagination');
+                // Return a Promise that resolves with the parsed JSON data and the header.
+                return res.json().then(data => {
+                // Here, we have access to both 'data' and 'paginationHeader'.
+                // We return a single object to be passed to the next .then() block.
+                  //parse pagination header
+                const pagination = JSON.parse(paginationHeader);
+                const { currentPage, itemsPerPage, totalItems, totalPages } = pagination;
+                
+                //update state variables
+                setContacts(Array.isArray(data) ? data : []);
+                setCurrentPage(currentPage > 0 ? currentPage : 1);
+                setItemsPerPage(itemsPerPage);
+                setTotalItems(totalItems);
+                setTotalPages(totalPages);
+             
+                return { data, paginationHeader };
+                });
+            })
+            .then(({ data, paginationHeader }) => {
+                //handle pagination
+                if (!paginationHeader) {
+                    console.warn('X-Pagination header missing, using fallback');
+                    setContacts([]);
+                    setCurrentPage(1);
+                    setItemsPerPage(10);
+                    setTotalItems(0);
+                    setTotalPages(0);
+                    return;
+            }}).catch(error => {
+                console.error('Error fetching contacts:', error);
+                // Set fallback state on error
+                    setContacts([]);
+                    setCurrentPage(1);
+                    setItemsPerPage(10);
+                    setTotalItems(0);
+                    setTotalPages(0);
+            });
     }, []);
 
     useEffect(() => {

@@ -2,17 +2,18 @@ namespace figAPI.Helpers
 {
     public class QueryParams
     {
-        private const int MaxPageSize = 10;
-
-        public int PageNumber { get; set; }
-        public int pageSize = 10;
+        public string? searchText { get; set; } = string.Empty;
+        public int PageNumber { get; set; } = 1;
+        private const int MaxPageSize = 20;
+        
+        public int _pageSize = 10;
         public int PageSize
         {
-            get { return pageSize; }
-            set { pageSize = (value > MaxPageSize) ? MaxPageSize : value; } 
+            get { return _pageSize; }
+            set { _pageSize = (value > MaxPageSize) ? MaxPageSize : value; } 
         }
 
-        public string searchText { get; set; }
+        
        
     }
 }

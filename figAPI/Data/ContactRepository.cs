@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using figAPI.Helpers;
 using figAPI.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -35,7 +36,7 @@ namespace figAPI.Data
             //Console.WriteLine("Params: "  + test);
 
             //add filter if not null
-            if (queryParams.searchText != null) {
+            if (queryParams.searchText != null && queryParams.searchText != "\"\"") {
                 
                 contacts = contacts.Where(u => u.first_name.Contains(queryParams.searchText) 
                         || u.last_name.Contains(queryParams.searchText)
